@@ -91,7 +91,7 @@ module.exports = class PgPersistence {
   async searchBlackList(refreshToken) {
     const query = `SELECT * FROM blacklist_refresh_tokens WHERE refresh_token = '${refreshToken}'`;
 
-    const result = await dbQuery(query);
+    const result = await dbQuery(query, true);
     if (result.rowCount > 0) {
       return result.rows;
     }
