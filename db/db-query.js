@@ -7,41 +7,15 @@ const CONNECTION = {
 };
 
 module.exports = {
-  async dbQuery(statement, signout) {
+  async dbQuery(statement) {
     // const client = new Client({ database: 'drop_in' });
     const client = new Client(CONNECTION);
-    if (signout) {
-      await client.connect();
-      try {
-        await client.query(statement);
-      } catch (err) {
-        console.log(err.stack);
-      }
-      await client.close();
-    } else {
-      await client.connect();
-      try {
-        const result = await client.query(statement);
-        return result;
-      } catch (err) {
-        console.log(err.stack);
-      }
+    await client.connect();
+    try {
+      await client.query(statement);
+    } catch (err) {
+      console.log(err.stack);
     }
-    // await client.query(statement, parameters)
-    //   .then((result) => result)
-    //   .catch((err) => console.log(err))
-    //   .then(() => client.end());
-    // try {
-    //   const result = await client.query(statement, parameters);
-    //   return result;
-    // } catch (err) {
-    //   console.log(err.stack);
-    // }
-    // await client.end((err) => {
-    //   console.log('postgres disconnected');
-    //   if (err) {
-    //     console.log('error during disconnection');
-    //   }
-    // });
+    await client.end();
   },
 };
