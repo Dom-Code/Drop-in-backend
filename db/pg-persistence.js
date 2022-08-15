@@ -95,7 +95,7 @@ module.exports = class PgPersistence {
     if (result.rowCount > 0) {
       return result.rows;
     }
-    return null;
+    return [];
   }
 
   async addToBlackList(refreshToken) {
