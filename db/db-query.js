@@ -6,8 +6,6 @@ const CONNECTION = {
   ssl: { rejectUnauthorized: false },
 };
 
-let signedIn = false;
-
 module.exports = {
   async dbQuery(statement, signout) {
     // const client = new Client({ database: 'drop_in' });
@@ -19,19 +17,16 @@ module.exports = {
       } catch (err) {
         console.log(err.stack);
       }
-      client.close();
+      await client.close();
+    } else {
+      await client.connect();
+      try {
+        const result = await client.query(statement);
+        return result;
+      } catch (err) {
+        console.log(err.stack);
+      }
     }
-
-    await client.connect();
-    signedIn = true;
-    try {
-      const result = await client.query(statement);
-      return result;
-    } catch (err) {
-      console.log(err.stack);
-    }
-
-
     // await client.query(statement, parameters)
     //   .then((result) => result)
     //   .catch((err) => console.log(err))
