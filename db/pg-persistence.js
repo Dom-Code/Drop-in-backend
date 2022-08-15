@@ -101,7 +101,7 @@ module.exports = class PgPersistence {
   async addToBlackList(refreshToken) {
     const query = `INSERT INTO blacklist_refresh_tokens (refresh_token) 
     VALUES('${refreshToken}')`;
-    const result = await dbQuery(query);
+    const result = await dbQuery(query, true);
     if (result.rowCount > 0) {
       return result.rows;
     }
