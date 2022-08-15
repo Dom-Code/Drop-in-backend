@@ -28,12 +28,12 @@ const handleAuth = async (req, res) => {
       }
       const accessToken = jwt.sign(
         { email: foundUser.email },
-        process.env.ACCESS_TOKEN_SECRET,
+        `${process.env.ACCESS_TOKEN_SECRET}`,
         { expiresIn: '5m' },
       );
       const refreshToken = jwt.sign(
         { email: foundUser.email },
-        process.env.REFRESH_TOKEN_SECRET,
+        `${process.env.REFRESH_TOKEN_SECRET}`,
         { expiresIn: '45m' },
       );
       return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
