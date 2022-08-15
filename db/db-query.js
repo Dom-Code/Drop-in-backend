@@ -22,6 +22,11 @@ module.exports = {
     } catch (err) {
       console.log(err.stack);
     }
-    await client.end();
+    await client.end((err) => {
+      console.log('postgres disconnected');
+      if (err) {
+        console.log('error during disconnection');
+      }
+    });
   },
 };
