@@ -6,6 +6,7 @@ module.exports = class PgPersistence {
     const results = await dbQuery(query);
     console.log(typeof results.rowCount);
     console.log(results.rowCount > 0);
+    console.log(results.rows);
     if (results.rowCount > 0) {
       return results.rows;
     }
