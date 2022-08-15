@@ -12,16 +12,16 @@ module.exports = {
     const client = new Client(CONNECTION);
     await client.connect();
 
-    await client.query(statement, parameters)
-      .then((result) => result)
-      .catch((err) => console.log(err.stack))
-      .then(() => client.end());
-  //   try {
-  //     const result = await client.query(statement, parameters);
-  //     return result;
-  //   } catch (err) {
-  //     console.log(err.stack);
-  //   }
-  //   await client.end();
+    // await client.query(statement, parameters)
+    //   .then((result) => result)
+    //   .catch((err) => console.log(err.stack))
+    //   .then(() => client.end());
+    try {
+      const result = await client.query(statement, parameters);
+      return result;
+    } catch (err) {
+      console.log(err.stack);
+    }
+    await client.end();
   },
 };
