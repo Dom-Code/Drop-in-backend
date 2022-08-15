@@ -4,6 +4,7 @@ module.exports = class PgPersistence {
   async getPartialProviders() {
     const query = 'SELECT (id, first_name, last_name, specialty, city, photo) FROM providers';
     const results = await dbQuery(query);
+    console.log(results)
     if (results.rowCount > 0) {
       return results.rows;
     }
