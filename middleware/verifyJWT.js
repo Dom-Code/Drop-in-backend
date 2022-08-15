@@ -9,7 +9,7 @@ const verifyJWT = (req, res, next) => {
       return res.status(404).json({ success: false, msg: 'Token not found' });
     }
     const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, null, (err) => {
+    jwt.verify(token, `${process.env.ACCESS_TOKEN_SECRET}`, null, (err) => {
       if (err) {
         return res.status(403).json({ success: false, msg: err.message });
       }

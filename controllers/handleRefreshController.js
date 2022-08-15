@@ -6,7 +6,7 @@ const handleRefreshToken = async (req, res) => {
 
   try {
     if (refreshToken) {
-      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, null, (err, decoded) => {
+      jwt.verify(refreshToken, `${process.env.REFRESH_TOKEN_SECRET}`, null, (err, decoded) => {
         if (err) {
           return res.status(401).json({ error: err.message });
         }
