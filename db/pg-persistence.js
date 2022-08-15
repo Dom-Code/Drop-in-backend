@@ -4,13 +4,10 @@ module.exports = class PgPersistence {
   async getPartialProviders() {
     const query = 'SELECT (id, first_name, last_name, specialty, city, photo) FROM providers';
     const results = await dbQuery(query);
-    console.log(typeof results.rowCount);
-    console.log(results.rowCount > 0);
-    console.log(results.rows);
     if (results.rowCount > 0) {
       return results.rows;
     }
-    return null;
+    return [];
   }
 
   async getFullProviders() {
@@ -19,7 +16,7 @@ module.exports = class PgPersistence {
     if (results.rowCount > 0) {
       return results.rows;
     }
-    return null;
+    return [];
   }
 
   async addUser(firstName, lastName, userEmail, userPw) {
@@ -67,7 +64,7 @@ module.exports = class PgPersistence {
     if (results.rowCount > 0) {
       return results.rows;
     }
-    return null;
+    return [];
   }
 
   async addCurrentUser(currentUser) {
@@ -88,7 +85,7 @@ module.exports = class PgPersistence {
     if (results.rowCount > 0) {
       return results.rows;
     }
-    return null;
+    return [];
   }
 
   async searchBlackList(refreshToken) {
