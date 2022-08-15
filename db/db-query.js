@@ -12,10 +12,11 @@ module.exports = {
     const client = new Client(CONNECTION);
     await client.connect();
     try {
-      await client.query(statement);
+      return await client.query(statement);
     } catch (err) {
       console.log(err.stack);
+    } finally {
+      await client.end();
     }
-    await client.end();
   },
 };
