@@ -11,9 +11,9 @@ const handleAuth = async (req, res) => {
 
   // Here we require both an email and a pw to log in.
 
-  try {
-    const foundUser = await res.locals.store.getEmail(email);
+  const foundUser = await res.locals.store.getEmail(email);
 
+  try {
     if (!foundUser) {
       return res.status(401).json({ auth: false, message: 'User not found' });
     }

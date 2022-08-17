@@ -13,7 +13,7 @@ async function handleReg(req, res) {
     console.log(hash);
 
     try {
-      const results = await res.locals.store.addUser(firstName, lastName, email, hash);
+      await res.locals.store.addUser(firstName, lastName, email, hash);
       if (results) {
         return res.json({ Success: 'User registered.' });
       }
