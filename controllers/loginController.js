@@ -12,7 +12,7 @@ const handleAuth = async (req, res) => {
   // Here we require both an email and a pw to log in.
 
   try {
-    const foundUser = (await res.locals.store.getEmail(email));
+    const foundUser = await res.locals.store.getEmail(email);
 
     if (!await res.locals.store.getEmail(email)) {
       return res.status(401).json({ auth: false, message: 'User not found' });
@@ -22,11 +22,10 @@ const handleAuth = async (req, res) => {
 
     const storedPw = foundUser[0].pw;
 
-    bcrypt.compare(pw, storedPw, (err, response) => {
+    bcrypt.compare(pw, storedPw, (err) => {
       if (err) {
-        return res.status(401).json({ error: err.message });
+        return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
       }
-      if (response) {
         const accessToken = jwt.sign(
           { email: foundUser.email },
           `${process.env.ACCESS_TOKEN_SECRET}`,
@@ -38,9 +37,7 @@ const handleAuth = async (req, res) => {
           { expiresIn: '45m' },
         );
         return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
-      }
-      return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
-
+      
       // The access token expires in 3 min. At expiration the frontend will send the refresh
       // token and recieve a new access token.
     });
