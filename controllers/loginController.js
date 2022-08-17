@@ -25,7 +25,7 @@ const handleAuth = async (req, res) => {
     console.log(foundUser[0].pw)
     console.log(storedPw)
 
-    if (storedPw && bcrypt.compare(pw, storedPw)) {
+    if (storedPw && await bcrypt.compare(pw, storedPw)) {
       const accessToken = jwt.sign(
         { email: foundUser.email },
         `${process.env.ACCESS_TOKEN_SECRET}`,
