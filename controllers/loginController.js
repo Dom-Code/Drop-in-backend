@@ -21,7 +21,7 @@ const handleAuth = async (req, res) => {
     const storedPw = foundUser[0].pw;
 
     bcrypt.compare(pw, storedPw, (err, response) => {
-      if (response) {
+      if (!err) {
         const accessToken = jwt.sign(
           { email: foundUser.email },
           `${process.env.ACCESS_TOKEN_SECRET}`,
@@ -34,6 +34,8 @@ const handleAuth = async (req, res) => {
         );
         return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
       }
+      console.log(err);
+      console.log(response);
       return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
     });
     // if email is not stored in database, return 401 error.
