@@ -8,7 +8,7 @@ async function handleReg(req, res) {
 
   async function registerUser(hash) {
     await res.locals.store.addUser(firstName, lastName, email, hash);
-    return res.json('Success: User registered.');
+    return res.json({ Success: 'User registered.' });
   }
 
   if (!isDuplicate) {
