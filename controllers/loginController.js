@@ -21,9 +21,12 @@ const handleAuth = async (req, res) => {
     // if email is not stored in database, return 401 error.
 
     const storedPw = foundUser[0].pw;
-    console.log(foundUser);
-    console.log(foundUser[0].pw)
-    console.log(storedPw)
+    const hashedPw = await bcrypt.hash(pw, 10);
+
+    console.log("hashed entered pw" + hashed)
+    console.log("stored pw" + storedPw)
+
+
     const compare = await bcrypt.compare(pw, storedPw)
     console.log(compare)
     console.log(await bcrypt.compare(pw, storedPw))
