@@ -6,15 +6,20 @@ async function handleReg(req, res) {
 
   const isDuplicate = await res.locals.store.checkDuplicate(email);
 
+  async function registerUser(firstName, lastName, hash) {
+    await res.locals.store.addUser(firstName, lastName, email, hash);
+    return res.json('Success: User registered.');
+  }
+
   if (!isDuplicate) {
     try {
-      bcrypt.genSalt(10, (err, salt) {
+      bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(pw, salt, (err, hash) => {
-          await res.locals.store.addUser(firstName, lastName, email, hash);
-          res.json('Success: User registered.');
+          if (hash) {
+            return registerUser(firstName, lastName, hash);
+          }
         });
-      })
-
+      });
 
       // const hashedPw = await bcrypt.hash(pw, 10);
       // await res.locals.store.addUser(firstName, lastName, email, hashedPw);
