@@ -22,6 +22,8 @@ const handleAuth = async (req, res) => {
 
     const storedPw = foundUser[0].pw;
     console.log(foundUser);
+    console.log(foundUser[0].pw)
+    console.log(storedPw)
 
     bcrypt.compare(pw, storedPw, (err) => {
       if (err) {
