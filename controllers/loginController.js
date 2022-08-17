@@ -23,8 +23,8 @@ const handleAuth = async (req, res) => {
     const storedPw = foundUser[0].pw;
     const hashedPw = await bcrypt.hash(pw, 10);
 
-    console.log("hashed entered pw" + hashedPw)
-    console.log("stored pw" + storedPw)
+    console.log(hashedPw)
+    console.log(storedPw)
 
 
     const compare = await bcrypt.compare(pw, storedPw)
