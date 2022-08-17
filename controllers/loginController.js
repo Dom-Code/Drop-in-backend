@@ -25,25 +25,41 @@ const handleAuth = async (req, res) => {
     console.log(foundUser[0].pw)
     console.log(storedPw)
 
-    bcrypt.compare(pw, storedPw, (err) => {
-      if (err) {
-        return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
-      }
-        const accessToken = jwt.sign(
-          { email: foundUser.email },
-          `${process.env.ACCESS_TOKEN_SECRET}`,
-          { expiresIn: '5m' },
-        );
-        const refreshToken = jwt.sign(
-          { email: foundUser.email },
-          `${process.env.REFRESH_TOKEN_SECRET}`,
-          { expiresIn: '45m' },
-        );
-        return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+    if (storedPw && bcrypt.compare(pw, storedPw)) {
+      const accessToken = jwt.sign(
+        { email: foundUser.email },
+        `${process.env.ACCESS_TOKEN_SECRET}`,
+        { expiresIn: '5m' },
+      );
+      const refreshToken = jwt.sign(
+        { email: foundUser.email },
+        `${process.env.REFRESH_TOKEN_SECRET}`,
+        { expiresIn: '45m' },
+      );
+      return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+    }
+
+    return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+
+    // bcrypt.compare(pw, storedPw, (err) => {
+    //   if (err) {
+    //     return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+    //   }
+    //     const accessToken = jwt.sign(
+    //       { email: foundUser.email },
+    //       `${process.env.ACCESS_TOKEN_SECRET}`,
+    //       { expiresIn: '5m' },
+    //     );
+    //     const refreshToken = jwt.sign(
+    //       { email: foundUser.email },
+    //       `${process.env.REFRESH_TOKEN_SECRET}`,
+    //       { expiresIn: '45m' },
+    //     );
+    //     return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
       
-      // The access token expires in 3 min. At expiration the frontend will send the refresh
-      // token and recieve a new access token.
-    });
+    //   // The access token expires in 3 min. At expiration the frontend will send the refresh
+    //   // token and recieve a new access token.
+    // });
 
     // We use bcrypt to compare the entered pw with the one saved in the database.
 
