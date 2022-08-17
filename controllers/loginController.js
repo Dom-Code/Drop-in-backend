@@ -14,7 +14,7 @@ const handleAuth = async (req, res) => {
   try {
     const foundUser = await res.locals.store.getEmail(email);
 
-    if (!await res.locals.store.getEmail(email)) {
+    if (foundUser) {
       return res.status(401).json({ auth: false, message: 'User not found' });
     }
 
