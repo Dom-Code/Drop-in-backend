@@ -20,25 +20,41 @@ const handleAuth = async (req, res) => {
 
     const storedPw = foundUser[0].pw;
 
-    bcrypt.compare(pw, storedPw, (err, response) => {
-      console.log(err);
-      console.log(response);
-      if (!err) {
-        const accessToken = jwt.sign(
-          { email: foundUser.email },
-          `${process.env.ACCESS_TOKEN_SECRET}`,
-          { expiresIn: '5m' },
-        );
-        const refreshToken = jwt.sign(
-          { email: foundUser.email },
-          `${process.env.REFRESH_TOKEN_SECRET}`,
-          { expiresIn: '45m' },
-        );
-        return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
-      }
+    const compare = bcrypt.compareSync(pw, storedPw);
+    if (compare) {
+      const accessToken = jwt.sign(
+        { email: foundUser.email },
+        `${process.env.ACCESS_TOKEN_SECRET}`,
+        { expiresIn: '5m' },
+      );
+      const refreshToken = jwt.sign(
+        { email: foundUser.email },
+        `${process.env.REFRESH_TOKEN_SECRET}`,
+        { expiresIn: '45m' },
+      );
+      return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+    }
+    return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
 
-      return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
-    });
+    // bcrypt.compare(pw, storedPw, (err, response) => {
+    //   console.log(err);
+    //   console.log(response);
+    //   if (!err) {
+    //     const accessToken = jwt.sign(
+    //       { email: foundUser.email },
+    //       `${process.env.ACCESS_TOKEN_SECRET}`,
+    //       { expiresIn: '5m' },
+    //     );
+    //     const refreshToken = jwt.sign(
+    //       { email: foundUser.email },
+    //       `${process.env.REFRESH_TOKEN_SECRET}`,
+    //       { expiresIn: '45m' },
+    //     );
+    //     return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+    //   }
+
+    //   return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+    // });
     // if email is not stored in database, return 401 error.
     // console.log(pw);
     // const storedPw = foundUser[0].pw;
