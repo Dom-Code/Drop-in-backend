@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 app.use(cors(corsOptions));
 app.use(cors({ exposedHeaders: 'Authorization' }));
 

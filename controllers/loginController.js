@@ -22,21 +22,25 @@ const handleAuth = async (req, res) => {
 
     const storedPw = foundUser[0].pw;
 
-    bcrypt.compare(pw, storedPw, (err) => {
+    bcrypt.compare(pw, storedPw, (err, response) => {
       if (err) {
-        return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+        return res.status(401).json({ error: err.message });
       }
-      const accessToken = jwt.sign(
-        { email: foundUser.email },
-        `${process.env.ACCESS_TOKEN_SECRET}`,
-        { expiresIn: '5m' },
-      );
-      const refreshToken = jwt.sign(
-        { email: foundUser.email },
-        `${process.env.REFRESH_TOKEN_SECRET}`,
-        { expiresIn: '45m' },
-      );
-      return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+      if (response) {
+        const accessToken = jwt.sign(
+          { email: foundUser.email },
+          `${process.env.ACCESS_TOKEN_SECRET}`,
+          { expiresIn: '5m' },
+        );
+        const refreshToken = jwt.sign(
+          { email: foundUser.email },
+          `${process.env.REFRESH_TOKEN_SECRET}`,
+          { expiresIn: '45m' },
+        );
+        return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+      }
+      return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+
       // The access token expires in 3 min. At expiration the frontend will send the refresh
       // token and recieve a new access token.
     });
