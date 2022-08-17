@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -18,33 +18,50 @@ const handleAuth = async (req, res) => {
       return res.status(401).json({ auth: false, message: 'User not found' });
     }
 
-    // if email is not stored in database, return 401 error.
-    console.log(pw)
     const storedPw = foundUser[0].pw;
-    const hashedPw = await bcrypt.hash(pw, 10);
 
-    console.log(hashedPw)
-    console.log(storedPw)
+    bcrypt.compare(pw, storedPw, (err, response) => {
+      if (response) {
+        const accessToken = jwt.sign(
+          { email: foundUser.email },
+          `${process.env.ACCESS_TOKEN_SECRET}`,
+          { expiresIn: '5m' },
+        );
+        const refreshToken = jwt.sign(
+          { email: foundUser.email },
+          `${process.env.REFRESH_TOKEN_SECRET}`,
+          { expiresIn: '45m' },
+        );
+        return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+      }
+      return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+    });
+    // if email is not stored in database, return 401 error.
+    // console.log(pw);
+    // const storedPw = foundUser[0].pw;
+    // const hashedPw = await bcrypt.hash(pw, 10);
 
+    // console.log(hashedPw);
+    // console.log(storedPw);
 
-    const compare = await bcrypt.compare(pw, storedPw)
-    console.log(compare)
-    console.log(await bcrypt.compare(pw, storedPw))
-    if (storedPw && compare) {
-      const accessToken = jwt.sign(
-        { email: foundUser.email },
-        `${process.env.ACCESS_TOKEN_SECRET}`,
-        { expiresIn: '5m' },
-      );
-      const refreshToken = jwt.sign(
-        { email: foundUser.email },
-        `${process.env.REFRESH_TOKEN_SECRET}`,
-        { expiresIn: '45m' },
-      );
-      return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
-    }
+    // const compare = await bcrypt.compare(pw, storedPw);
+    // console.log(compare);
+    // console.log(await bcrypt.compare(pw, storedPw));
+    // if (storedPw && compare) {
+    //   const accessToken = jwt.sign(
+    //     { email: foundUser.email },
+    //     `${process.env.ACCESS_TOKEN_SECRET}`,
+    //     { expiresIn: '5m' },
+    //   );
+    //   const refreshToken = jwt.sign(
+    //     { email: foundUser.email },
+    //     `${process.env.REFRESH_TOKEN_SECRET}`,
+    //     { expiresIn: '45m' },
+    //   );
+    //   return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+    // }
 
-    return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+    // return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
 
     // bcrypt.compare(pw, storedPw, (err) => {
     //   if (err) {
@@ -61,7 +78,7 @@ const handleAuth = async (req, res) => {
     //       { expiresIn: '45m' },
     //     );
     //     return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
-      
+
     //   // The access token expires in 3 min. At expiration the frontend will send the refresh
     //   // token and recieve a new access token.
     // });
