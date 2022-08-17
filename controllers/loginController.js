@@ -11,30 +11,30 @@ const handleAuth = async (req, res) => {
 
   // Here we require both an email and a pw to log in.
 
-  const foundUser = await res.locals.store.getEmail(email);
+  // const foundUser = await res.locals.store.getEmail(email);
 
-  try {
-    if (!foundUser) {
-      return res.status(401).json({ auth: false, message: 'User not found' });
-    }
+  // try {
+  //   if (!foundUser) {
+  //     return res.status(401).json({ auth: false, message: 'User not found' });
+  //   }
 
-    const storedPw = foundUser[0].pw;
+  //   const storedPw = foundUser[0].pw;
 
-    const compare = bcrypt.compareSync(pw, storedPw);
-    if (compare) {
-      const accessToken = jwt.sign(
-        { email: foundUser.email },
-        `${process.env.ACCESS_TOKEN_SECRET}`,
-        { expiresIn: '5m' },
-      );
-      const refreshToken = jwt.sign(
-        { email: foundUser.email },
-        `${process.env.REFRESH_TOKEN_SECRET}`,
-        { expiresIn: '45m' },
-      );
-      return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
-    }
-    return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+  //   const compare = bcrypt.compareSync(pw, storedPw);
+  //   if (compare) {
+  //     const accessToken = jwt.sign(
+  //       { email: foundUser.email },
+  //       `${process.env.ACCESS_TOKEN_SECRET}`,
+  //       { expiresIn: '5m' },
+  //     );
+  //     const refreshToken = jwt.sign(
+  //       { email: foundUser.email },
+  //       `${process.env.REFRESH_TOKEN_SECRET}`,
+  //       { expiresIn: '45m' },
+  //     );
+  //     return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+  //   }
+  //   return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
 
     // bcrypt.compare(pw, storedPw, (err, response) => {
     //   console.log(err);
@@ -82,25 +82,25 @@ const handleAuth = async (req, res) => {
 
     // return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
 
-    // bcrypt.compare(pw, storedPw, (err) => {
-    //   if (err) {
-    //     return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
-    //   }
-    //     const accessToken = jwt.sign(
-    //       { email: foundUser.email },
-    //       `${process.env.ACCESS_TOKEN_SECRET}`,
-    //       { expiresIn: '5m' },
-    //     );
-    //     const refreshToken = jwt.sign(
-    //       { email: foundUser.email },
-    //       `${process.env.REFRESH_TOKEN_SECRET}`,
-    //       { expiresIn: '45m' },
-    //     );
-    //     return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+    bcrypt.compare(pw, storedPw, (err) => {
+      if (err) {
+        return res.status(401).json({ auth: false, message: 'Incorrect email or password' });
+      }
+        const accessToken = jwt.sign(
+          { email: foundUser.email },
+          `${process.env.ACCESS_TOKEN_SECRET}`,
+          { expiresIn: '5m' },
+        );
+        const refreshToken = jwt.sign(
+          { email: foundUser.email },
+          `${process.env.REFRESH_TOKEN_SECRET}`,
+          { expiresIn: '45m' },
+        );
+        return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
 
-    //   // The access token expires in 3 min. At expiration the frontend will send the refresh
-    //   // token and recieve a new access token.
-    // });
+      // The access token expires in 3 min. At expiration the frontend will send the refresh
+      // token and recieve a new access token.
+    });
 
     // We use bcrypt to compare the entered pw with the one saved in the database.
 
