@@ -6,7 +6,7 @@ async function handleReg(req, res) {
 
   const isDuplicate = await res.locals.store.checkDuplicate(email);
 
-  async function registerUser(firstName, lastName, hash) {
+  async function registerUser(hash) {
     await res.locals.store.addUser(firstName, lastName, email, hash);
     return res.json('Success: User registered.');
   }
@@ -14,9 +14,9 @@ async function handleReg(req, res) {
   if (!isDuplicate) {
     try {
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(pw, salt, (err, hash) => {
+        bcrypt.hash(pw, salt, (error, hash) => {
           if (hash) {
-            return registerUser(firstName, lastName, hash);
+            return registerUser(hash);
           }
         });
       });
