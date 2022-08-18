@@ -35,10 +35,6 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(cors({ exposedHeaders: 'Authorization' }));
 
-app.get('/Drop-in-app-react/user', (req, res) => {
-  res.redirect('https://dom-code.github.io/Drop-in-app-react/');
-});
-
 app.use('/api/register', require('./routes/register'));
 app.use('/api/partial-providers', require('./routes/partialProviders'));
 
