@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(cors({ exposedHeaders: 'Authorization' }));
 
-app.use('/user', (req, res) => {
+app.use('/Drop-in-app-react/user', (req, res) => {
   res.redirect('/Drop-in-app-react');
 });
 
