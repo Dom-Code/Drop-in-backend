@@ -35,6 +35,10 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(cors({ exposedHeaders: 'Authorization' }));
 
+app.use('/user', (req, res) => {
+  res.redirect('/Drop-in-app-react');
+});
+
 app.use('/api/register', require('./routes/register'));
 app.use('/api/partial-providers', require('./routes/partialProviders'));
 
