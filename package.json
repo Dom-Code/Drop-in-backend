@@ -6,7 +6,7 @@
   "scripts": {
     "heroku-postbuild": "npm install --production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "server": "node server.js",
     "client": "npm start --prefix client",
     "build": "webpack"
@@ -16,7 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "concurrently": "^7.2.2",
     "cookie-parser": "^1.4.6",

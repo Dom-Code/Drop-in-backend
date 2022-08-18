@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 async function handleReg(req, res) {
   const { firstName, lastName, pw } = req.body;
@@ -10,17 +10,11 @@ async function handleReg(req, res) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pw, salt);
 
-    console.log(hash);
-
     try {
-      await res.locals.store.addUser(firstName, lastName, email, hash);
+      const results = await res.locals.store.addUser(firstName, lastName, email, hash);
       if (results) {
         return res.json({ Success: 'User registered.' });
       }
-
-      // const hashedPw = await bcrypt.hash(pw, 10);
-      // await res.locals.store.addUser(firstName, lastName, email, hashedPw);
-      // res.json('Success: User registered.');
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
