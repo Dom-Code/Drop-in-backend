@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "heroku-postbuild": "npm install --production",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage ",
     "start": "nodemon server.js",
     "server": "node server.js",
     "client": "npm start --prefix client",
@@ -35,7 +35,10 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "nodemon": "^2.0.19"
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.19",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.8"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

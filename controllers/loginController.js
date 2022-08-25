@@ -30,7 +30,7 @@ const handleAuth = async (req, res) => {
           `${process.env.REFRESH_TOKEN_SECRET}`,
           { expiresIn: '45m' },
         );
-        return res.status(200).json({ status: 'Logged in', accessToken, refreshToken });
+        return res.status(200).json({ auth: true, accessToken, refreshToken });
       }
     }
     return res.status(401).json({ auth: false, message: 'Incorrect email or password' });

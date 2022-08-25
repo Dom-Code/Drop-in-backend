@@ -13,7 +13,7 @@ async function getPartialProviders(req, res) {
       photo: data[5],
     };
   });
-  res.json(formattedProviders);
+  res.status(200).json(formattedProviders);
 }
 
 module.exports = getPartialProviders;
