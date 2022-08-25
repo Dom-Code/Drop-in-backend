@@ -8,8 +8,8 @@ const CONNECTION = {
 
 module.exports = {
   async dbQuery(statement) {
-    const client = new Client({ database: 'drop_in' });
-    // const client = new Client(CONNECTION);
+    // const client = new Client({ database: 'drop_in' });
+    const client = new Client(CONNECTION);
     await client.connect();
     try {
       return await client.query(statement);
