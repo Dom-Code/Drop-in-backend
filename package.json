@@ -44,7 +44,7 @@
     "source.fixAll.eslint": true
   },
   "engines" : {
-    "node" : ">=14.20.0",
-    "npm" : ">=6.14.17"
+    "node" : "14.20.0",
+    "npm" : "6.14.17"
   }
 }
