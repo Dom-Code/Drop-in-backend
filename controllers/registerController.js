@@ -3,9 +3,7 @@ const bcrypt = require('bcrypt');
 async function handleReg(req, res) {
   const { firstName, lastName, pw } = req.body;
   const email = req.body.email.toLowerCase();
-
   const isDuplicate = await res.locals.store.checkDuplicate(email);
-
   if (!isDuplicate) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(pw, salt);

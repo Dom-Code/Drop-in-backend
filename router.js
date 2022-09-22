@@ -9,6 +9,6 @@ router.post('/auth', require('./controllers/loginController'));
 router.get('/logout', require('./controllers/logoutController'));
 router.get('/full-providers', verifyJWT, require('./controllers/fullProvidersController'));
 router.get('/refresh', verifyBlackList, require('./controllers/handleRefreshController'));
-router.get('/register', require('./controllers/registerController'));
+router.post('/register', require('./controllers/registerController'));
 
 module.exports = router;
