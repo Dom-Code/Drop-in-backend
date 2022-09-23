@@ -107,4 +107,14 @@ module.exports = class PgPersistence {
     }
     return null;
   }
+
+  async sendRequest(req) {
+    const query = `INSERT INTO requests (user_id, provider_id, insurance, insurancenbr, request)
+    VALUES ('${req.userId}', '${req.providerId}', '${req.insurance}', '${req.insuranceNbr}', '${req.msg}')`;
+    const result = await dbQuery(query, true);
+    if (result.rowCount > 0) {
+      return result.rows;
+    }
+    return null;
+  }
 };

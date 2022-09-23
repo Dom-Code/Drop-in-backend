@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const handleRefreshToken = async (req, res) => {
+  console.log(req.headers.authorization);
   const refreshToken = req.headers.authorization.split(' ')[1];
 
   try {

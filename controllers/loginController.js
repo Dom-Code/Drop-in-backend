@@ -13,10 +13,9 @@ const handleAuth = async (req, res) => {
 
   try {
     const foundUser = await res.locals.store.getEmail(email);
-
     if (foundUser) {
       const hashedPw = foundUser[0].pw.trim();
-
+      const userId = foundUser[0].id;
       const compare = await bcrypt.compare(pw, hashedPw);
 
       if (compare) {
@@ -30,7 +29,9 @@ const handleAuth = async (req, res) => {
           `${process.env.REFRESH_TOKEN_SECRET}`,
           { expiresIn: '45m' },
         );
-        return res.status(200).json({ auth: true, accessToken, refreshToken });
+        return res.status(200).json({
+          auth: true, accessToken, refreshToken, userId,
+        });
       }
     }
     return res.status(401).json({ auth: false, message: 'Incorrect email or password' });

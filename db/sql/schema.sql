@@ -36,3 +36,14 @@ VALUES('Charles', 'Wen', 'Urology', 'San Ramon', '5102230421',
 '8 weeks', './images/doc.png');
 
 
+CREATE TABLE requests (
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  user_id int REFERENCES users(id) NOT NULL,
+  provider_id int REFERENCES providers(id) NOT NULL,
+  insurance varchar(30),
+  insuranceNbr int,
+  request varchar(400) NOT NULL
+);
+
+INSERT INTO requests (user_id, provider_id, insurance, insurance_number, request) 
+VALUES (`${req.userId}, ${req.providerId}, ${req.insurance}, ${req.insuranceNbr}, ${req.msg}`);
